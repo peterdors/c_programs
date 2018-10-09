@@ -23,12 +23,7 @@ int *create_array_of_duplicates(int len)
 
 	srand(time(NULL));
 
-	for (i = 0; i < len/2; i++)
-	{
-		array[i] = rand() % RAND_NUMBER_SIZE;
-	}
-
-	for (i = len/2; i < len; i++)
+	for (i = 0; i < len; i++)
 	{
 		array[i] = rand() % RAND_NUMBER_SIZE;
 	}
