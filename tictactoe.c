@@ -1,3 +1,7 @@
+// Peter Dorsaneo
+//
+// tictactoe.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,7 +61,7 @@ void update_board(char **board, int *count, int move)
 int check_board(char **board)
 {
 
-	int i, j;
+	int i;
 
 	// checks for horizontal sequence
 	for (i = 0; i < ROWS; i += 2)
@@ -86,6 +90,7 @@ int check_board(char **board)
 		}
 	}
 
+	// checks for diagonal sequence from topmost left to right
 	if(
 		 board[0][1] == board[2][5] &&
 		 board[0][1] == board[4][9] &&
@@ -94,7 +99,7 @@ int check_board(char **board)
 	{
 		return 1;
 	}
-
+	// checks for diagonal sequence from topmost right to left
 	if(
 		 board[0][9] == board[2][5] &&
 		 board[0][9] == board[4][1] &&
@@ -121,15 +126,17 @@ void destroy_board(char **board)
 
 int main(void)
 {	
-	int i, j, move = -1, count = 0;
+	int i, j, move = -1, count = 0, flag = 0, retval = -1;
 	char **board = create_board();
 
 	display_board(board);
 
 	printf("Player 1 is X\nPlayer 2 is O\n");
 
-	// enter 0 as input for scanf() to terminate the loop
-	while (check_board(board) == 0)
+	// Loops until there is a winner, 
+	// or if no winner then terminates when count variable 
+	// is greater or equal to 10
+	while ( 1 )
 	{
 		printf("Player %d enter a number to make a move: ", count % 2 == 0 ? 1 : 2);
 		scanf("%d", &move);
@@ -139,9 +146,29 @@ int main(void)
 		display_board(board);
 
 		count++;
+
+		retval = check_board(board);
+
+		// loop terminating condition 
+		if (retval == 0 && count >= 9)
+		{
+			flag = 1;
+			break;
+		}
+		else if (retval == 1)
+		{
+			break;
+		}
 	}
 
-	printf("The winner is Player %s\n", (count+1) % 2 == 0 ? "1 (X)" : "2 (O)");
+	if (flag)
+	{
+		printf("There is no winner in this game...\n");
+	}
+	else
+	{
+		printf("The winner is Player %s\n", (count+1) % 2 == 0 ? "1 (X)" : "2 (O)");
+	}
 
 	destroy_board(board);
 	return 0;
