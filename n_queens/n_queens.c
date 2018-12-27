@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int *initBoard(int *board, int n);
+
+void solveBoard(int *board, int start, int n);
+int isConflict(int *board, int start, int i, int j, int n);
+void printBoard(int *board, int n);
+void solveNQueens(int n);
+
+
 int *initBoard(int *board, int n)
 {
 	board = calloc(sizeof(int), n);
@@ -11,6 +19,48 @@ int *initBoard(int *board, int n)
 	}
 	
 	return board;
+}
+
+int isConflict(int *board, int start, int i, int j, int n)
+{
+
+	if (board[i] == j)
+	{
+		return 1;
+	}
+
+	int x = (i - j);
+	x = (x < 0) ? x * -1 : x;
+
+	int y = start - j;
+	y = (y < 0) ? y * -1 : y;
+
+	if (x == y)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+void printBoard(int *board, int n)
+{
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			if (board[i] > -1)
+			{
+				printf("Q ");
+			}
+			else
+			{
+				printf("_ ");
+			}
+		}
+
+		printf("\n");
+	}
 }
 
 void solveNQueens(int n)
@@ -34,7 +84,9 @@ void solveNQueens(int n)
 
 	*/
 
-	solveBoard(board, start, n);
+	solveBoard(board, 0, n);
+
+	printBoard(board, n);
 }
 
 // @params: the array for the board, the starting row/index on the board
@@ -62,7 +114,9 @@ void solveBoard(int *board, int start, int n)
 			if (!isConflict(board, start, i, j, n))
 			{
 				// Check if there is a conflict with placing that queen.
+				board[start] = j;
 
+				solveBoard(board, start + 1, n);
 			}
 		}
 	}
@@ -71,12 +125,6 @@ void solveBoard(int *board, int start, int n)
 }
 
 
-int isConflict(int *board, int start, int i, int j, int n)
-{
-
-	
-
-}
 
 int main(int argc, char **argv)
 {
